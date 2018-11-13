@@ -1,0 +1,35 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <!--menu 字体图片颜色-->
+        <item name="actionMenuTextColor">@color/color_FFFFFF</item>
+        <item name="android:actionMenuTextColor">@color/color_FFFFFF</item>
+
+        <!--<item name="android:windowAnimationStyle">@style/activityAnim</item>-->
+    </style>
+
+    <!--全屏显示-->
+    <style name="AppTheme.Full" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <!-- 界面切换动画 -->
+    <style name="activityAnim" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/alpha_activity_open</item>
+        <item name="android:activityCloseExitAnimation">@anim/alpha_activity_close</item>
+    </style>
+
+
+    <!--pop自下往上弹出动画-->
+    <style name="pop_down_to_up_anim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/anim_down_to_up_pop_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_down_to_up_pop_out</item>
+    </style>
+
+</resources>

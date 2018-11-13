@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card_while">
+
+    <EditText
+        android:id="@+id/et_motto_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="为自己起个名称吧！"
+        android:padding="10dp"
+        android:textSize="17sp"
+        android:textColor="@color/color_333333"
+        android:background="@color/color_FFFFFF"/>
+
+    <EditText
+        android:id="@+id/et_motto_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:hint="输入详细内容~"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333"
+        android:gravity="top"
+        android:layout_below="@+id/et_motto_title"
+        android:layout_above="@+id/bt_motto_save"
+        android:background="@color/color_FFFFFF"/>
+
+    <Button
+        android:id="@+id/bt_memo_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="保存"/>
+
+</RelativeLayout>

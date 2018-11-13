@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    tools:context=".action.motto.EditMottoActivity">
+
+    <EditText
+        android:id="@+id/et_motto_input"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_FFFFFF"
+        android:hint="编辑一条属于自己的座右铭~"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="14sp"
+        android:textColor="@color/color_333333" />
+
+    <Button
+        android:id="@+id/bt_motto_save"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="保存"/>
+
+</LinearLayout>

@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">点滴</string>
+
+    <string name="slide_welcome">记录生活的点点滴滴</string>
+
+    <string name="empty_str" />
+
+    <string name="add_memo">TODO</string>
+
+</resources>

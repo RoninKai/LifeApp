@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".action.main.MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:showDividers="middle"
+    android:divider="@drawable/linear_dividers_line_vertical_d9">
+
+    <TextView
+        android:id="@+id/tv_motto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:hint="点击这里，编辑一条属于自己的座右铭~"
+        android:textSize="15sp"
+        android:textColor="@color/color_333333"
+        android:gravity="center"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:ellipsize="marquee"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:singleLine="true"
+        android:visibility="gone"/>
+
+    <com.base.view.tabpage.TabPageView
+        android:id="@+id/tpv_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:tabPage_tabPosition="BOTTOM"
+        app:tabPage_tabMode="MODE_FIXED"
+        app:tabPage_tabBackground="@color/color_FFFFFF"
+        app:tabPage_tabCustomView="@layout/tab_item_main_layout"
+        app:tabPage_tabPageIndicatorHeight="0dp"
+        app:tabPage_viewPageCanScroll="false"
+        app:tabPage_overScrollModeShow="true"
+        app:tabPage_viewPageOffscreenLimit="3" />
+
+
+</LinearLayout>

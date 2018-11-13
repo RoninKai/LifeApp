@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="main_tab_name_arr">
+        <item>预办</item>
+        <item>周边</item>
+        <item>设置</item>
+    </array>
+
+</resources>
