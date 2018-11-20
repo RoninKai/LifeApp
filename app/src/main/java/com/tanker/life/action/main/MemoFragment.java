@@ -13,7 +13,6 @@ import com.tanker.life.action.base.BaseFragment;
 import com.tanker.life.action.base.adapter.BaseAdapter;
 import com.tanker.life.action.base.adapter.GridSpacingItemDecoration;
 import com.tanker.life.action.main.adapter.MemoAdapter;
-import com.tanker.life.action.motto.AddMemoPopWindow;
 import com.tanker.life.common.CommonValues;
 import com.tanker.life.db.DBHelper;
 import com.tanker.life.eventbus.Event;
@@ -24,10 +23,12 @@ import com.tanker.life.manager.sharepre.SharePreManager;
 import com.tanker.life.net.api.WeatherApi;
 import com.tanker.life.net.bean.weather.Result;
 import com.tanker.life.net.bean.weather.WeatherResult;
-import com.tanker.life.net.callback.WeatherCallBack;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DefaultObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author : Tanker
@@ -45,7 +46,9 @@ public class MemoFragment extends BaseFragment {
     @OnClick(R.id.fab_add_memo)
     public void onViewClicked(View view) {
 //        toActivity(AddMemoActivity.class);
-        new AddMemoPopWindow(thisContext).showAsScreenBottom(view);
+//        new AddMemoPopWindow(thisContext).showAsScreenBottom(view);
+        tvWetherInfo = null;
+        tvWetherInfo.setText("");
     }
 
     @Override
@@ -61,20 +64,27 @@ public class MemoFragment extends BaseFragment {
         LocationManager.getInstance().getLocationCity(thisContext.getApplicationContext(), new LocationCallBack.GetAddressCallBack() {
             @Override
             public void onCallaBack(String cityCode, String cityName) {
-                WeatherApi.api().getWeather(cityName, new WeatherCallBack<Result<WeatherResult>>() {
-                    @Override
-                    public void onSuccess(Result<WeatherResult> result) {
-                        WeatherResult weatherResult = result.getResult();
-                        tvWetherInfo.setText(weatherResult.toString());
-                        ImageLoadManager.load(thisContext, weatherResult.getCurrentCityImage()).into(ivCurrentCityPic);
-                        SharePreManager.getInstance().putString(CommonValues.SHAREPRE_ADDRESS_PIC,weatherResult.getCurrentCityImage());
-                    }
+                WeatherApi.api().getWeather(cityName)
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DefaultObserver<Result<WeatherResult>>() {
 
-                    @Override
-                    public void onFailure(String errCode, String errorMsg) {
+                            @Override
+                            public void onNext(Result<WeatherResult> result) {
+                                WeatherResult weatherResult = result.getResult();
+                                tvWetherInfo.setText(weatherResult.toString());
+                                ImageLoadManager.load(thisContext, weatherResult.getCurrentCityImage()).into(ivCurrentCityPic);
+                                SharePreManager.getInstance().putString(CommonValues.SHAREPRE_ADDRESS_PIC, weatherResult.getCurrentCityImage());
+                            }
 
-                    }
-                });
+                            @Override
+                            public void onError(Throwable e) {
+                            }
+
+                            @Override
+                            public void onComplete() {
+                            }
+                        });
             }
         });
         initAdapterData();

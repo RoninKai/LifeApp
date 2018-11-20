@@ -1,9 +1,9 @@
 package com.tanker.life.net.api;
 
 import com.tanker.life.common.NetWorkConfig;
-import com.tanker.life.net.bean.baidu.BaiduResult;
-import com.tanker.life.net.callback.BaiduCallBack;
 import com.tanker.life.net.retrofit.RetrofitUtils;
+
+import io.reactivex.Observable;
 
 /**
  * @author : Tanker
@@ -12,14 +12,14 @@ import com.tanker.life.net.retrofit.RetrofitUtils;
  * @describe : TODO
  */
 public class BaiduApi {
-    private static  BaiduApi api = new BaiduApi();
+    private static BaiduApi api = new BaiduApi();
 
-    public static BaiduApi api(){
+    public static BaiduApi api() {
         return api;
     }
 
-    public void getBaiduGirl(String name, String type,BaiduCallBack<BaiduResult> callback){
-        RetrofitUtils.getApiService(NetWorkConfig.getBaiduGirl()).getBaiduGirl(name,type).enqueue(callback);
+    public Observable getBaiduGirl(String name, String type) {
+        return RetrofitUtils.getApiService(NetWorkConfig.getBaiduGirl()).getBaiduGirl(name, type);
     }
 
 }

@@ -30,7 +30,7 @@ public class AddMemoPopWindow extends BasePopWindow {
     EditText etMottoContent;
 
     @OnClick(R.id.bt_memo_save)
-    public void onViewClicked() {
+    void onViewClicked() {
         String title = etMottoTitle.getText().toString();
         String content = etMottoContent.getText().toString();
         if (TextUtils.isEmpty(title) || TextUtils.isEmpty(content)) {

@@ -5,7 +5,7 @@ import com.tanker.life.net.bean.baidu.BaiduResult;
 import com.tanker.life.net.bean.weather.Result;
 import com.tanker.life.net.bean.weather.WeatherResult;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -24,9 +24,9 @@ public interface ApiService {
      * @return
      */
     @GET("index?key=30878a0ea2df204acf307208298a1d92")
-    Call<Result<WeatherResult>> getWeatherAsAddress(@Query("cityname") String city);
+    Observable<Result<WeatherResult>> getWeatherAsAddress(@Query("cityname") String city);
 
     @GET("listjson?pn=0&rn=30&ie=utf8")
-    Call<BaiduResult> getBaiduGirl(@Query("tag1") String name, @Query("tag2") String type);
+    Observable<BaiduResult> getBaiduGirl(@Query("tag1") String name, @Query("tag2") String type);
 
 }

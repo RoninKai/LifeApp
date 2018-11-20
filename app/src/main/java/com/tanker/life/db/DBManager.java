@@ -3,6 +3,7 @@ package com.tanker.life.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tanker.life.app.ApplicationContext;
 import com.tanker.life.util.BuildTypeUtils;
 
 import org.greenrobot.greendao.database.Database;
@@ -21,6 +22,10 @@ public class DBManager {
     private DaoSession daoSession;
 
     private static DBManager dbManager;
+
+    private DBManager(){
+        initDB(ApplicationContext.getInstance().getApplicationContext());
+    }
 
     public static DBManager getInstance() {
         if (dbManager == null) {

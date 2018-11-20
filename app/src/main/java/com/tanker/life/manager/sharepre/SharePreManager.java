@@ -3,14 +3,9 @@ package com.tanker.life.manager.sharepre;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
-import android.util.Base64;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import com.tanker.life.app.ApplicationContext;
+import com.tanker.life.common.CommonValues;
 
 /**
  * @author Tanker。
@@ -21,18 +16,18 @@ import java.io.Serializable;
 public class SharePreManager {
 
     private SharePreManager() {
+        init(ApplicationContext.getInstance().getApplicationContext(), CommonValues.SHAREPRE_FILE_NAME, Context.MODE_PRIVATE);
     }
 
     private static class LazyHolder {
         private static final SharePreManager INSTANCE = new SharePreManager();
     }
 
-    public static final SharePreManager getInstance() {
+    public static SharePreManager getInstance() {
         return LazyHolder.INSTANCE;
     }
 
     private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
 
     /**
      * 初始化 SharedPreferences
@@ -43,14 +38,17 @@ public class SharePreManager {
      */
     public void init(Context context, String fileName, int shareType) {
         sharedPreferences = context.getSharedPreferences(fileName, shareType);
-        editor = sharedPreferences.edit();
+    }
+
+    private SharedPreferences.Editor getEditor() {
+        return sharedPreferences.edit();
     }
 
     /**
      * 清空保存的所有数据
      */
     public void clear() {
-        editor.clear().apply();
+        getEditor().clear().apply();
     }
 
     /**
@@ -59,13 +57,13 @@ public class SharePreManager {
      * @param key
      */
     public void remove(String key) {
-        editor.remove(key).apply();
+        getEditor().remove(key).apply();
     }
 
     /**************************** String ***************************/
 
     public void putString(String key, String value) {
-        editor.putString(key, value).apply();
+        getEditor().putString(key, value).apply();
     }
 
     public String getString(String key) {
@@ -83,7 +81,7 @@ public class SharePreManager {
     /**************************** int ***************************/
 
     public void putInt(String key, int value) {
-        editor.putInt(key, value).apply();
+        getEditor().putInt(key, value).apply();
     }
 
     public int getInt(String key) {
@@ -97,7 +95,7 @@ public class SharePreManager {
     /**************************** boolean ***************************/
 
     public void putBoolean(String key, boolean value) {
-        editor.putBoolean(key, value).apply();
+        getEditor().putBoolean(key, value).apply();
     }
 
     public boolean getBoolean(String key) {
@@ -111,7 +109,7 @@ public class SharePreManager {
     /**************************** float ***************************/
 
     public void putFloat(String key, int value) {
-        editor.putFloat(key, value).apply();
+        getEditor().putFloat(key, value).apply();
     }
 
     public float getFloat(String key) {
@@ -125,7 +123,7 @@ public class SharePreManager {
     /**************************** float ***************************/
 
     public void putLong(String key, long value) {
-        editor.putLong(key, value).apply();
+        getEditor().putLong(key, value).apply();
     }
 
     public long getLong(String key) {
@@ -134,76 +132,6 @@ public class SharePreManager {
 
     public long getLong(String key, long defaultValue) {
         return sharedPreferences.getLong(key, defaultValue);
-    }
-
-    /**************************** Bean ***************************/
-
-    public void putBean(String key, Object value) {
-        if (value instanceof Serializable) {// obj必须实现Serializable接口，否则会出问题
-            ByteArrayOutputStream byteArrayOutputStream = null;
-            ObjectOutputStream objectOutputStream = null;
-            try {
-                byteArrayOutputStream = new ByteArrayOutputStream();
-                objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-                objectOutputStream.writeObject(value);
-                putString(key, new String(Base64.encode(byteArrayOutputStream.toByteArray(), 0)));
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (byteArrayOutputStream != null) {
-                    try {
-                        byteArrayOutputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (objectOutputStream != null) {
-                    try {
-                        objectOutputStream.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
-
-    public Object getBean(String key) {
-        return getBean(key, null);
-    }
-
-    public Object getBean(String key, Object defaultValue) {
-        Object bean = null;
-        String base64 = getString(key);
-        if (TextUtils.isEmpty(base64)) {
-            return defaultValue;
-        }
-        ByteArrayInputStream byteArrayInputStream = null;
-        ObjectInputStream objectInputStream = null;
-        try {
-            byte[] base64Bytes = Base64.decode(base64.getBytes(), 1);
-            byteArrayInputStream = new ByteArrayInputStream(base64Bytes);
-            objectInputStream = new ObjectInputStream(byteArrayInputStream);
-            bean = objectInputStream.readObject();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (byteArrayInputStream != null) {
-                try {
-                    byteArrayInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (objectInputStream != null) {
-                try {
-                    objectInputStream.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return bean;
     }
 
 }

@@ -2,9 +2,8 @@ package com.tanker.life.net.api;
 
 import com.tanker.life.common.NetWorkConfig;
 import com.tanker.life.net.retrofit.RetrofitUtils;
-import com.tanker.life.net.callback.WeatherCallBack;
-import com.tanker.life.net.bean.weather.Result;
-import com.tanker.life.net.bean.weather.WeatherResult;
+
+import io.reactivex.Observable;
 
 /**
  * @author : Tanker
@@ -24,10 +23,9 @@ public class WeatherApi {
      * 获取天气
      *
      * @param cityName
-     * @param call
      */
-    public void getWeather(String cityName, WeatherCallBack<Result<WeatherResult>> call) {
-        RetrofitUtils.getApiService(NetWorkConfig.getWeatherUrl()).getWeatherAsAddress(cityName).enqueue(call);
+    public Observable getWeather(String cityName) {
+        return RetrofitUtils.getApiService(NetWorkConfig.getWeatherUrl()).getWeatherAsAddress(cityName);
     }
 
 }

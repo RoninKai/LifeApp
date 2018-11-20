@@ -1,6 +1,8 @@
 package com.tanker.life.action.main;
 
+import android.Manifest;
 import android.os.Build;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
@@ -77,6 +79,10 @@ public class MainActivity extends BaseActivity {
             }
         });
         initMotto();
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.READ_CONTACTS,
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1001);
     }
 
     @Override

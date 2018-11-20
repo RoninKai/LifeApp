@@ -1,12 +1,9 @@
 package com.tanker.life.app;
 
 import android.app.Application;
-import android.content.Context;
 
+import com.tanker.base.util.AppUtils;
 import com.tanker.base.util.LogUtils;
-import com.tanker.life.common.CommonValues;
-import com.tanker.life.db.DBManager;
-import com.tanker.life.manager.sharepre.SharePreManager;
 
 /**
  * @author : Tanker
@@ -19,9 +16,15 @@ public class LifeApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (!AppUtils.isAppProcess(getApplicationContext())) {
+            return;
+        }
+        long startTime = System.currentTimeMillis();
         LogUtils.openPrintLog();
-        SharePreManager.getInstance().init(getApplicationContext(), CommonValues.SHAREPRE_FILE_NAME,Context.MODE_PRIVATE);
-        DBManager.getInstance().initDB(getApplicationContext());
+        ApplicationContext.getInstance().initContext(this);
+        CrashHandler.getInstance().open();
+        long endTime = System.currentTimeMillis();
+        LogUtils.i("" + (endTime - startTime));
     }
 
 }

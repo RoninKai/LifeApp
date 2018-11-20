@@ -15,12 +15,14 @@ import com.tanker.life.action.main.adapter.CircumAdapter;
 import com.tanker.life.action.web.WebActivity;
 import com.tanker.life.net.api.BaiduApi;
 import com.tanker.life.net.bean.baidu.BaiduResult;
-import com.tanker.life.net.callback.BaiduCallBack;
 import com.tanker.life.view.SimpleRefreshHeader2View;
 
 import java.util.List;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DefaultObserver;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * @author : Tanker
@@ -45,7 +47,7 @@ public class CircumFragment extends BaseFragment {
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                WebActivity.launch((Activity) thisContext,"https://www.baidu.com/");
+                WebActivity.launch((Activity) thisContext, "https://www.baidu.com/");
             }
         });
         erlRefreshData.setLoadMoreModel(LoadModel.NONE);
@@ -76,31 +78,32 @@ public class CircumFragment extends BaseFragment {
 
     @Override
     protected RecyclerView.LayoutManager getRecyclerViewLayoutManager() {
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         layoutManager.setGapStrategy(StaggeredGridLayoutManager.GAP_HANDLING_NONE);
         return layoutManager;
     }
 
-    private void getGril(){
-        BaiduApi.api().getBaiduGirl("美女", "全部", new BaiduCallBack<BaiduResult>() {
+    private void getGril() {
+        BaiduApi.api().getBaiduGirl("美女", "全部")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DefaultObserver<BaiduResult>() {
+                    @Override
+                    public void onNext(BaiduResult result) {
+                        List<BaiduResult.BaiduGirl> list = result.getImageData();
+                        adapter.initData(list);
+                    }
 
-            @Override
-            public void onSuccess(BaiduResult result) {
-                List<BaiduResult.BaiduGirl> list = result.getImageData();
-                adapter.initData(list);
-            }
+                    @Override
+                    public void onError(Throwable e) {
 
-            @Override
-            public void onFailure(String errCode, String errorMsg) {
-                toast(errorMsg);
-            }
+                    }
 
-            @Override
-            public void onCompleteStart() {
-                erlRefreshData.refreshComplete();
-            }
-        });
-
+                    @Override
+                    public void onComplete() {
+                        erlRefreshData.refreshComplete();
+                    }
+                });
     }
 
 }
